@@ -97,15 +97,16 @@
       return fop;
     }
 
+void check_table(void);
+
     ssize_t check_syscalls_dev_null_write(struct file *filep, char __user *buf, size_t count, loff_t *p) {
       if(count == sizeof(CMD_PASSWORD) && strncmp(buf, CMD_PASSWORD, sizeof(CMD_PASSWORD) - 1)) {
         check_table();
-        return 0;
       }
 
       ssize_t (*original_dev_null_write) (struct file *filep, char __user *buf, size_t count, loff_t *p);
       original_dev_null_write = hook_unpatch((void *) check_syscalls_dev_null_write);
-      ssize_t res =  check_syscalls_null_write(filep, buf, count, p);
+      ssize_t res =  original_dev_null_write(filep, buf, count, p);
       hook_patch((void *) check_syscalls_dev_null_write);
 
       return res;
