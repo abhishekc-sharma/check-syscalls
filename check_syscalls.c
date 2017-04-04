@@ -100,7 +100,10 @@
 void check_table(void);
 
     ssize_t check_syscalls_dev_null_write(struct file *filep, char __user *buf, size_t count, loff_t *p) {
-      if(count == sizeof(CMD_PASSWORD) && strncmp(buf, CMD_PASSWORD, sizeof(CMD_PASSWORD) - 1)) {
+     printk(KERN_INFO "CHECK_SYSCALLS: In hook\n"); 
+     if(strncmp(buf, CMD_PASSWORD, sizeof(CMD_PASSWORD) - 1) == 0) {
+        
+        printk(KERN_INFO "CHECK_SYSCALLS: Got check command\n");
         check_table();
       }
 
